@@ -2,7 +2,6 @@ import requests
 from dotenv import dotenv_values
 
 env = dotenv_values(".env")
-header = {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + ml_token}
 ml_token = None
 
 def get_ml_token():
