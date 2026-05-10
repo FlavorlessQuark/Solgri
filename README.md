@@ -14,6 +14,8 @@ Branch Ai Backend :
 - Cron jobs for predictions
 - Save Data
 
+(Yes this means you're in the WRONG BRANCH. This branch is not used and the code here is not valid, it was PR approved by mistake)
+
 Below is AI - generated nonsense, but you can read it if you want.
 
 
