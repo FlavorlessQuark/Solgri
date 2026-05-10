@@ -13,17 +13,17 @@ system_prompt = "You are a helpful assistant that\
     power can also be sent to the grid and sent to critical nodes if needed. Your job is to analyzes the \
     preidcted output and decisions of the other agents and explain it in human readable terms. You should also provide a summary of the forecast and the decisions of the other agents"
 
-messages = [system_prompt]
+messages = [{"role": "system", "content": system_prompt}]
 
-def get_llama_summary (power_out, forecast, weather, decision):
+def get_llama_summary (prev, new, weather):
     messages.append(
         {
             "role": "user", 
-            "content": f"Power output: {power_out}\nForecast: {forecast}\nWeather: {weather}\nDecision: {decision}\n\nPlease provide a summary of the forecast and the decisions of the other agents.",
+            "content": f"Previous network state: {prev}\nNew network state: {new}\nWeather forecast: {weather}\nExplain the changes in the network and the forecast in human readable terms, and provide a summary of the forecast and the decisions of the other agents"
         },
     ),
     response = client.chat.completions.create(
-    model="meta-llama/Llama-3.1-8B-Instruct",
+    model="NousResearch/Hermes-3-Llama-3.1-8B",
         max_tokens=4096,
         messages=messages
     )
