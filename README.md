@@ -3,49 +3,19 @@ IBM X UNSA hackathon --> The grid but if it was clean and community owned
 
 ## Project Structure
 
+Branch: Backend (misleading name, I know)
 - **frontend/** - React TypeScript web application
 - **backend/** - Python Flask REST API
+Handles the visualization
 
-## Frontend Setup
+Branch Ai Backend :
+- Meastro script coordinates data and AI
+- WatsonX makes prediction
+- Cron jobs for predictions
+- Save Data
 
-```bash
-cd frontend
+Below is AI - generated nonsense, but you can read it if you want.
 
-# Install dependencies
-npm install
-
-# Start development server
-npm start
-
-# Build for production
-npm run build
-
-# Run tests
-npm test
-```
-
-The frontend will be available at `http://localhost:3000`
-
-## Backend Setup
-
-```bash
-cd backend
-
-# Create and activate virtual environment
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Run development server
-python app.py
-
-# Or run with Flask CLI
-flask --app app run
-```
-
-The backend API will be available at `http://localhost:5000`
 
 ### REST API Endpoints
 
