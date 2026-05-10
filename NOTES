@@ -1,0 +1,14 @@
+- [ ] Backend with mock data
+    - [x] API
+        - [X] Fetch system states at time
+        - [x] Set speed
+        - [X] Websocket connection for real-time changes
+    - CRON -> Weekly, Daily, hourly
+    - [x] Fetch node status
+    - [x] Fetch weather and grid carbon
+    - [ ] Send data to Watsonx
+- [X] Frontend with visualization
+    - [X]  View nodes
+    - [X]  View weather data & carbon data
+    - [X]  View grid connect or not
+    - [X]  View connections
