@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+env
+.env
+=======
 # Frontend
 frontend/node_modules/
 frontend/build/
@@ -24,3 +28,4 @@ backend/.env.*.local
 # OS
 .DS_Store
 Thumbs.db
+>>>>>>> a4a2d18c6595b8af6e94e93715840ecb0d1b8905

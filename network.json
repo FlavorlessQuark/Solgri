@@ -1,0 +1,70 @@
+    [
+        {
+            "id": "0",
+            "type": "solar",
+            "status": 1,
+            "output": 500 ,
+            "targets": [1, 2]
+        },
+        {
+            "id": "1",
+            "type": "battery",
+            "status": 1,
+            "output": 250 ,
+            "charge_level": 65 ,
+            "targets": [2, 3]
+        },
+        {
+            "id": "2",
+            "type": "load",
+            "status": 1,
+            "output": 120,
+            "priority": 1,
+            "targets": []
+        },
+        {
+            "id": "3",
+            "type": "load",
+            "status": 1,
+            "output": 400 ,
+            "priority": 5,
+            "targets": []
+        },
+        {
+            "id": "4",
+            "type": "wind",
+            "status": 1,
+            "output": 600 ,
+            "targets": [3, 5]
+        },
+        {
+            "id": "5",
+            "type": "grid",
+            "status": 1,
+            "output": 1000,
+            "targets": [2, 3, 6] 
+        },
+        {
+            "id": "6",
+            "type": "load",
+            "status": 1,
+            "output": 800,
+            "priority": 0,
+            "targets": []
+        },
+        {
+            "id": "7",
+            "type": "solar",
+            "status": 1,
+            "output": 150 ,
+            "targets" : [8, 1]
+        },
+        {
+            "id": "8",
+            "type": "load",
+            "status": 1,
+            "output": 80,
+            "priority": 2,
+            "targets": []
+        }
+    ]

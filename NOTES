@@ -1,14 +1,18 @@
-- [ ] Backend with mock data
-    - [x] API
-        - [X] Fetch system states at time
-        - [x] Set speed
-        - [X] Websocket connection for real-time changes
-    - CRON -> Weekly, Daily, hourly
-    - [x] Fetch node status
-    - [x] Fetch weather and grid carbon
-    - [ ] Send data to Watsonx
-- [X] Frontend with visualization
-    - [X]  View nodes
-    - [X]  View weather data & carbon data
-    - [X]  View grid connect or not
-    - [X]  View connections
+- [X] Connect to DB
+- [ ] Aggregate IoT Data
+- [ ] Get power data and weather data
+- [x] Send data to Watson
+- [ ] Receive data from watson and send to decision model
+- [ ] Receive data from model
+- [x] Use llama to transfrom data into human readable explanation
+- [ ] Save data and explanation to DB
+
+One time script to
+Load grid layout data
+Get numbers for grid layout data (production, consumption, etc.)
+save in storage (save  id)
+
+aqggregate data * send to prediction
+blank api calls to other model for decision
+send decision to llama
+save to DB (Overwite previous of same kind)
