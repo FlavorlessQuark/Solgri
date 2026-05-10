@@ -1,0 +1,161 @@
+{
+    "nodes": [
+    {
+        "id": "0",
+        "type": "solar",
+        "status": 1,
+        "output": 500,
+        "targets": [
+            "1",
+            "2"
+        ],
+        "energy_received": 0,
+        "energy_sent": 50.89032980303226,
+        "shortage": 0,
+        "served": false,
+        "action": "generating_clean_energy",
+        "max_generation_capacity": 500,
+        "predicted_generation": 50.89032980303226
+    },
+    {
+        "id": "1",
+        "type": "battery",
+        "status": 1,
+        "output": 250,
+        "charge_level": 40.0,
+        "capacity": 1000,
+        "targets": [
+            "2",
+            "3"
+        ],
+        "energy_received": 0,
+        "energy_sent": 250,
+        "shortage": 0,
+        "served": false,
+        "action": "discharging_to_support_loads",
+        "max_battery_power": 250,
+        "min_charge_level": 20,
+        "max_charge_rate": 250,
+        "max_discharge_rate": 250
+    },
+    {
+        "id": "2",
+        "type": "load",
+        "status": 1,
+        "output": 120,
+        "priority": 1,
+        "targets": [],
+        "energy_received": 120.0,
+        "energy_sent": 0,
+        "shortage": 0.0,
+        "served": true,
+        "action": "powered_with_grid_support",
+        "energy_demand": 120
+    },
+    {
+        "id": "3",
+        "type": "load",
+        "status": 1,
+        "output": 400,
+        "priority": 5,
+        "targets": [],
+        "energy_received": 400.0,
+        "energy_sent": 0,
+        "shortage": 0.0,
+        "served": true,
+        "action": "powered_with_grid_support",
+        "energy_demand": 400
+    },
+    {
+        "id": "4",
+        "type": "wind",
+        "status": 1,
+        "output": 600,
+        "targets": [
+            "3",
+            "5"
+        ],
+        "energy_received": 0,
+        "energy_sent": 38.09058389420559,
+        "shortage": 0,
+        "served": false,
+        "action": "generating_clean_energy",
+        "max_generation_capacity": 600,
+        "predicted_generation": 38.09058389420559
+    },
+    {
+        "id": "5",
+        "type": "grid",
+        "status": 1,
+        "output": 1000,
+        "targets": [
+            "2",
+            "3",
+            "6"
+        ],
+        "energy_received": 0,
+        "energy_sent": 1000,
+        "shortage": 0,
+        "served": false,
+        "action": "importing_from_grid",
+        "max_grid_power": 1000
+    },
+    {
+        "id": "6",
+        "type": "load",
+        "status": 1,
+        "output": 800,
+        "priority": 0,
+        "targets": [],
+        "energy_received": 789.8712434996286,
+        "energy_sent": 0,
+        "shortage": 10.128756500371423,
+        "served": false,
+        "action": "load_shedding_required",
+        "energy_demand": 800
+    },
+    {
+        "id": "7",
+        "type": "solar",
+        "status": 1,
+        "output": 150,
+        "targets": [
+            "8",
+            "1"
+        ],
+        "energy_received": 0,
+        "energy_sent": 50.890329802390696,
+        "shortage": 0,
+        "served": false,
+        "action": "generating_clean_energy",
+        "max_generation_capacity": 150,
+        "predicted_generation": 50.890329802390696
+    },
+    {
+        "id": "8",
+        "type": "load",
+        "status": 1,
+        "output": 80,
+        "priority": 2,
+        "targets": [],
+        "energy_received": 80.0,
+        "energy_sent": 0,
+        "shortage": 0.0,
+        "served": true,
+        "action": "powered_with_grid_support",
+        "energy_demand": 80
+    }
+    
+],
+ "weather": {
+        "solar_irradiance": 0.0,
+        "temperature": 10.0,
+        "humidity": 83,
+        "atmospheric_pressure": 1013.8,
+        "wind_speed": 4.9,
+        "hour_of_day": 0,
+        "day_of_week": 0
+    },
+    "explanation": "Initial system state with solar, wind, battery, grid, and load nodes. Solar and wind are generating clean energy based on weather conditions. Battery is discharging to support loads. Grid is importing energy to meet demand. Load 6 is experiencing a shortage and requires load shedding."
+
+}
