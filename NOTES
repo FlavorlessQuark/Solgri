@@ -1,11 +1,11 @@
 - [X] Connect to DB
-- [ ] Aggregate IoT Data
-- [ ] Get power data and weather data
+- [X] Aggregate IoT Data
+- [X] Get power data and weather data
 - [x] Send data to Watson
-- [ ] Receive data from watson and send to decision model
+- [X] Receive data from watson and send to decision model
 - [ ] Receive data from model
 - [x] Use llama to transfrom data into human readable explanation
-- [ ] Save data and explanation to DB
+- [X] Save data and explanation to DB
 
 One time script to
 Load grid layout data
