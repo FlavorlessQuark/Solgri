@@ -9,7 +9,6 @@ from flask_socketio import SocketIO, emit
 import os
 from dotenv import load_dotenv
 import time
-from data import generate_mock_data, mock_database
 from websocket import register_socketio_events, run_websocket_jobs
 load_dotenv()
 
@@ -23,48 +22,6 @@ TIME_BASE_MID = 60 * 24  # 24 hours
 TIME_BASE_LONG = 60 * 24 * 7  # 7 days
 
 register_socketio_events(socketio)
-
-@app.route('/api/health', methods=['GET'])
-def health_check():
-    """Health check endpoint to verify backend is running"""
-    return jsonify({'status': 'ok', 'message': 'Backend is running'})
-
-@app.route('/api/test', methods=['GET'])
-def test_endpoint():
-    """Test endpoint for basic communication"""
-    return jsonify({
-        'message': 'System Data',
-        'data': {'greeting': 'Hello from Solgri Backend'}
-    })
-
-@app.route('/api/current', methods=['GET'])
-def get_current_data():
-    """Get current system data for different time periods"""
-    current_time = time.time()
-
-    # Generate mock data for different time periods
-    data = {
-        [
-            {
-                'period': TIME_BASE,
-                'data': generate_mock_data('60min', current_time)
-            },
-           {
-                'next_fetch': TIME_BASE_MID,  # 24 hours from now
-                'data': generate_mock_data('24hr', current_time)
-            },
-            {
-                'next_fetch': TIME_BASE_LONG,  # 7 days from now
-                'data': generate_mock_data('7day', current_time)
-            }
-        ]
-    }
-
-    return jsonify({
-        'message': 'Current system data retrieved',
-        'data': data
-    })
-
 
 
 if __name__ == '__main__':

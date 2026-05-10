@@ -4,7 +4,10 @@ from flask import request
 from flask_socketio import emit
 from apscheduler.schedulers.background import BackgroundScheduler
 from dotenv import load_dotenv
-from data import generate_mock_data, mock_database
+from data import get_initial, get_day, get_week, get_hour   
+
+import redis
+
 load_dotenv()
 
 TIME_BASE = 60  # 60 minutes
@@ -16,15 +19,27 @@ scheduler = BackgroundScheduler()
 
 
 def fetch_data_from_database(time_ID: int):
-    mock_database[time_ID]['data'] = generate_mock_data()
+    if time_ID == TIME_BASE:
+        data = get_hour()
+    elif time_ID == TIME_BASE_MID:
+        data = get_day()
+    elif time_ID == TIME_BASE_LONG:
+        data = get_week()
 
-    emit('data_response', {
+    emit('state_update', {
         'period': time_ID,
-        'data': mock_database[time_ID]['data'],
+        'data': data,
     })
 
 
 active_clients = set()
+
+
+r = redis.Redis(host='localhost', port=6379)
+
+def update_ai_fecth(mult):
+    # Publish a "command" to the data server
+    r.publish('time_control', mult)
 
 def register_socketio_events(socketio):
     @socketio.on('connect')
@@ -37,15 +52,15 @@ def register_socketio_events(socketio):
             [
             {
                 'period': TIME_BASE,
-                'data': generate_mock_data('60min', current_time)
+                'data': get_initial()
             },
            {
                 'next_fetch': TIME_BASE_MID,  # 24 hours from now
-                'data': generate_mock_data('24hr', current_time)
+                'data': get_initial()
             },
             {
                 'next_fetch': TIME_BASE_LONG,  # 7 days from now
-                'data': generate_mock_data('7day', current_time)
+                'data': get_initial()
             }
         ])
 
@@ -58,13 +73,13 @@ def register_socketio_events(socketio):
     @socketio.on('set_time')
     def handle_set_time(data):
         time_period = data.get('mult')
-
+        print(f"Received set_time command with multiplier: {time_period}")
         try:
-            # Fetch data from mock database
+            # # Fetch data from mock database
             jobs[0].reschedule_job(lambda: fetch_data_from_database(TIME_BASE , minutes=TIME_BASE * (1 / time_period)))
             jobs[1].reschedule_job(lambda: fetch_data_from_database(TIME_BASE_MID , minutes=TIME_BASE_MID * (1 / time_period)))
             jobs[2].reschedule_job(lambda: fetch_data_from_database(TIME_BASE_LONG , minutes=TIME_BASE_LONG * (1 / time_period)))
-
+            update_ai_fecth(time_period)
         except Exception as e:
             print(f"Error rescheduling jobs: {e}")
             emit('error', {'message': f'Error fetching {time_period} data'})
@@ -78,7 +93,7 @@ def register_socketio_events(socketio):
 
 def run_websocket_jobs():
     print("Scheduling WebSocket jobs...")
-    jobs.append(scheduler.add_job(lambda: fetch_data_from_database(TIME_BASE), 'interval', minutes=TIME_BASE, id=str(TIME_BASE)))
-    jobs.append(scheduler.add_job(lambda: fetch_data_from_database(TIME_BASE_MID), 'interval', minutes=TIME_BASE_MID, id=str(TIME_BASE_MID)))
-    jobs.append(scheduler.add_job(lambda: fetch_data_from_database(TIME_BASE_LONG), 'interval', minutes=TIME_BASE_LONG, id=str(TIME_BASE_LONG)))
+    jobs.append(scheduler.add_job(lambda: fetch_data_from_database(TIME_BASE), 'interval', minutes=TIME_BASE + 2, id=str(TIME_BASE)))
+    jobs.append(scheduler.add_job(lambda: fetch_data_from_database(TIME_BASE_MID), 'interval', minutes=TIME_BASE_MID + 2, id=str(TIME_BASE_MID)))
+    jobs.append(scheduler.add_job(lambda: fetch_data_from_database(TIME_BASE_LONG), 'interval', minutes=TIME_BASE_LONG + 2, id=str(TIME_BASE_LONG)))
     print(f"WebSocket jobs scheduled: {len(jobs)}")
