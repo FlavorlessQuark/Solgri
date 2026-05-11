@@ -1,9 +1,9 @@
-Solgri: Intelligent Microgrid Management & Optimization
-IBM Z × UNSA, Project Write-Up
+# Solgri: Intelligent Microgrid Management & Optimization
+### IBM Z × UNSA, Project Write-Up
 ________________
 
 
-Overview
+## Overview 
 Solgri is an AI-powered microgrid management system built to give communities real control over how they generate, store, distribute, and consume energy. The system models a neighbourhood's energy infrastructure as a network of nodes, including solar panels, wind turbines, batteries, homes, essential services, and external grid connections. It reads the current state of that network, forecasts what is coming in the next minutes, hours, and days, and then decides how energy should flow across every node to make the most out of clean sources while keeping critical infrastructure running.
 
 
@@ -13,7 +13,7 @@ The core principle behind Solgri is straightforward: clean energy comes first, t
 ________________
 
 
-The Problem
+## The Problem
 Most energy grids were not designed with distributed, renewable generation in mind. Neighbourhoods today often have solar panels, wind turbines, and battery storage sitting right there, but no intelligent coordination layer to make them work together. Without that, clean energy gets wasted, batteries charge and discharge at the wrong time, and communities stay unnecessarily dependent on a main grid that is often both expensive and carbon-heavy.
 
 
@@ -23,21 +23,22 @@ When severe weather hits or the main grid goes down, there is no logic in place 
 ________________
 
 
-Sustainability Goals
-SDG 7: Affordable and Clean Energy Solgri gives priority to local solar and battery-stored energy before ever touching grid power. This directly lowers energy costs for community members and increases their day-to-day access to clean renewable sources.
+## Sustainability Goals
+**SDG 7**: Affordable and Clean Energy Solgri gives priority to local solar and battery-stored energy before ever touching grid power. This directly lowers energy costs for community members and increases their day-to-day access to clean renewable sources.
 
 
-SDG 11: Sustainable Cities and Communities By letting neighbourhoods manage and share power on their own terms, Solgri reduces dependence on centralized infrastructure. It actively protects high-priority nodes like hospitals and emergency services, even when the main grid becomes unavailable.
+**SDG 11**: Sustainable Cities and Communities By letting neighbourhoods manage and share power on their own terms, Solgri reduces dependence on centralized infrastructure. It actively protects high-priority nodes like hospitals and emergency services, even when the main grid becomes unavailable.
 
 
-SDG 13: Climate Action Every decision Solgri makes is carbon-aware. The carbon intensity of the main grid is tracked continuously, and the system avoids pulling from it during high-emission periods. Over time, this produces a measurable drop in the carbon footprint of every neighbourhood the system serves.
+**SDG 13**: Climate Action Every decision Solgri makes is carbon-aware. The carbon intensity of the main grid is tracked continuously, and the system avoids pulling from it during high-emission periods. Over time, this produces a measurable drop in the carbon footprint of every neighbourhood the system serves.
 
 
 ________________
 
 
-How It Works
-The Node Model
+## How It Works
+
+#### The Node Model
 The entire network is represented as a list of nodes. Each node carries a type, a status, an energy output or demand value, and a list of targets, which are the node IDs it currently supplies power to. There are five node types.
 
 
@@ -59,8 +60,8 @@ A node's status field tells the system whether that node is online (1) or offlin
 ________________
 
 
-The Three Layers
-Layer 1: Prediction
+## The Three Layers
+#### Layer 1: Prediction
 
 
 Before any routing decision is made, Solgri forecasts how much energy each generation node will produce. Two separate machine learning models handle this, one for solar and one for wind, each exposed through its own API endpoint.
@@ -69,32 +70,32 @@ Before any routing decision is made, Solgri forecasts how much energy each gener
 The solar prediction model takes the following inputs:
 
 
-solar_pv_output, solar_irradiance, temperature, humidity,
+```solar_pv_output, solar_irradiance, temperature, humidity,
 atmospheric_pressure, wind_speed, hour_of_day, day_of_week
-
+```
 The wind prediction model takes:
 
 
-wind_power_output, solar_irradiance, wind_speed, temperature,
+```wind_power_output, solar_irradiance, wind_speed, temperature,
 humidity, atmospheric_pressure, hour_of_day, day_of_week
-
+```
 IBM Watsonx runs the underlying time-series forecasting and the system calls each model endpoint separately to get predicted generation values per node. These values are then written back to the node objects before the decision engine runs.
 
 
-Layer 2: Network Analysis
+#### Layer 2: Network Analysis
 
 
 Once predictions are available, the system computes the overall energy balance:
 
 
-total_generation = predicted_solar + predicted_wind + battery_available
+```total_generation = predicted_solar + predicted_wind + battery_available
 total_demand     = sum of all load node requirements
 balance          = total_generation - total_demand
-
+```
 A positive number means surplus. A negative number means shortage. This balance figure is what drives every downstream decision.
 
 
-Layer 3: Decision and Optimization
+#### Layer 3: Decision and Optimization
 
 
 This is where the actual orchestration happens. Based on the energy balance, the state of each node, battery levels, and the main grid's current carbon intensity, the system assigns actions to every node in the network.
@@ -112,14 +113,14 @@ The dispatch order never changes: Solar → Wind → Battery → Grid. The main 
 ________________
 
 
-Carbon Awareness
+#### Carbon Awareness
 The main grid's carbon intensity, measured in grams of CO₂ per kilowatt-hour, is scraped in real time and fed into the decision engine as a live input. When that number is low, the system may import from the grid to top up batteries ahead of a high-demand period. When it is high, the system avoids any grid import even if that means shedding lower-priority loads. This is what makes Solgri not just energy-efficient but actively emission-minimizing in its moment-to-moment decisions.
 
 
 ________________
 
 
-Prediction Strategy
+#### Prediction Strategy
 Solgri operates across three planning horizons at the same time.
 
 
@@ -138,7 +139,7 @@ Before any major action is taken, the system checks confidence thresholds. A sig
 ________________
 
 
-System Architecture
+#### System Architecture
 
 ```
 ┌─────────────────────────────────────┐
@@ -182,31 +183,33 @@ React Frontend visualizes the network in real time, showing energy flows between
 ________________
 
 
-Technology Stack
-Component
-	Technology
-	Forecasting and AI
-	IBM Watsonx
-	IoT Data Collection
-	IBM IoT Platform
-	Object Storage
-	IBM Object Storage
-	Cloud Compute
-	IBM Cloud Serverless / VPS
-	Natural Language Layer
-	Featherless AI (Llama)
-	Backend
-	Python
-	Frontend
-	React
-	Infrastructure
-	Docker and Nginx
+#### Technology Stack
+Components
+
+* Forecasting and AI
+
+	- IBM Watsonx
+	- IoT Data Collection
+	- IBM IoT Platform
 	
+* Object Storage
+
+	- IBM Object Storage
+* Cloud Compute
+	- IBM Cloud Serverless / VPS
+* Natural Language Layer
+
+	- Featherless AI (Llama)
+* Backend
+	- Python
+	- Redis
+* Frontend
+	- React
 
 ________________
 
 
-Data Inputs
+#### Data Inputs
 All data sources are aligned to the same time window to keep predictions and decisions consistent:
 
 
@@ -223,7 +226,7 @@ Sample Decision Output
 The system returns an updated version of the full network node list after each decision cycle. Each node reflects what happened, how much energy it sent or received, whether it was fully served, and what action the system assigned to it.
 
 
-[
+```[
     {
         "id": "0",
         "type": "solar",
@@ -354,14 +357,14 @@ The system returns an updated version of the full network node list after each d
         "energy_demand": 80
     }
 ]
-
+```
 This output then gets passed to the Llama layer which translates it into a plain-language summary shown on the dashboard. Something like: "The neighbourhood is running on a mix of solar and battery power. Node 6 is experiencing a minor shortfall of around 10 units and load shedding has been flagged. The main grid is active but being used conservatively given current carbon levels."
 
 
 ________________
 
 
-Impact
+#### Impact
 Solgri turns passive energy infrastructure into something that actively works for the community. Neighbourhoods get resilience when the main grid fails, lower emissions because clean sources always come first, reduced costs because locally generated power cuts down grid purchases, and full transparency through plain-language explanations of every decision the system makes.
 
 
